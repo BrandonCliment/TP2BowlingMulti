@@ -13,25 +13,38 @@ import java.util.ArrayList;
  * @author pedago
  */
 public class Multi implements MultiPlayerGame {
-    ArrayList<Player> Joueurs = new ArrayList<Player>();
+    
+    public ArrayList<Player> Joueurs = new ArrayList<Player>();
+    public int cp = 0;
 
     @Override
-    public String startNewGame(String[] playerName) throws Exception {
+    public String startNewGame(String[] playerName) /*throws Exception*/ {
         for (int i=0; i<playerName.length;i++){
             Joueurs.add(new Player(playerName[i]));
         }
-        return "Prochain tir : Joueur "+Joueurs.get(0).getname() + " tour n°"+ Joueurs.get(0).game.getFrameNumber() + ", boule n°" + Joueurs.get(0).game.getNextBallNumber();
+        return "Prochain tir : Joueur "+Joueurs.get(cp).getname() + ", tour n°"+ Joueurs.get(cp).game.getFrameNumber() + ", boule n°" + Joueurs.get(cp).game.getNextBallNumber();
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String lancer(int nombreDeQuillesAbattues) throws Exception {
+    public String lancer(int nombreDeQuillesAbattues)  /*throws Exception*/ {
         
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.Joueurs.get(cp).game.lancer(nombreDeQuillesAbattues);
+        System.out.println(this.Joueurs.get(cp).game.getNextBallNumber());
+        if (this.Joueurs.get(cp).game.getNextBallNumber() == 3 || nombreDeQuillesAbattues == 10){
+            if (cp+1 == 4 ){
+                cp=0;
+            }
+            else{
+                cp++;
+            }
+        }
+        //System.out.println(cp);
+        return "Prochain tir : Joueur "+Joueurs.get(cp).getname() + ", tour n°"+ Joueurs.get(cp).game.getFrameNumber() + ", boule n°" + Joueurs.get(cp).game.getNextBallNumber();
     }
 
     @Override
-    public int scoreFor(String playerName) throws Exception {
+    public int scoreFor(String playerName)  /*throws Exception*/ {
         for (int i=0;i<Joueurs.size();i++){
             if (Joueurs.get(i).getname()==playerName){
                 return Joueurs.get(i).game.score();
